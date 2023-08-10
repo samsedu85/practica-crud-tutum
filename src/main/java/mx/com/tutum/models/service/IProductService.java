@@ -20,5 +20,7 @@ public interface IProductService {
 	public void save(ProductDto productDto);
 	
 	public void deleteById(Long id);
+	
+	public List<ProductDto> findByNameContainingIgnoreCase(String keyword);
 
 }

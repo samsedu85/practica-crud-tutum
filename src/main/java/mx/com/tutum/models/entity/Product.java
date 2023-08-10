@@ -36,7 +36,9 @@ public class Product implements Serializable {
 	@Column(name = "id_product")
 	private Long idProduct;
 
+	@Column(nullable = false)
 	private String name;
+	@Column(nullable = false)
 	private Double price;
 
 	@Column(name = "create_at")

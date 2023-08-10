@@ -3,11 +3,13 @@
  */
 package mx.com.tutum.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +33,22 @@ public class ProductController {
 	private IProductService productService;
 
 	@GetMapping("/products")
-	public String getProducts(Model model) {
+	public String getProducts(Model model, @Param("keyword") String keyword) {
 
+		List<ProductDto> listProducts = new ArrayList<>();
 		try {
 
-			List<ProductDto> listProducts = productService.findAll();
+			if(keyword == null) {
+				listProducts = productService.findAll();
+			} else {
+				productService.findByNameContainingIgnoreCase(keyword).forEach(listProducts::add);
+				model.addAttribute("keyword", keyword);
+			}
 			model.addAttribute("productos", listProducts);
 			logger.info("obteniendo lista de productos");
 
 		} catch (Exception error) {
-			model.addAttribute("mensaje_error", "Por el momento no es posible mostrar los productos");
+			model.addAttribute("mensaje", "Por el momento no es posible mostrar los productos");
 			logger.error(error.getMessage());
 		}
 
@@ -60,10 +68,10 @@ public class ProductController {
 
 		try {
 			productService.save(productDto);
-			redirectAttributes.addFlashAttribute("mensaje_error", "El producto se guardo correctamente");
+			redirectAttributes.addFlashAttribute("mensaje", "El producto se guardo correctamente");
 			logger.info("producto (" + productDto.getName() + ") se guardo correctamente");
 		} catch (Exception error) {
-			redirectAttributes.addFlashAttribute("mensaje_error", "Hubo un error al guardar el producto");
+			redirectAttributes.addFlashAttribute("mensaje", "Hubo un error al guardar el producto");
 			logger.error(error.getMessage());
 		}
 
@@ -80,7 +88,7 @@ public class ProductController {
 			logger.info("Se actualizo correctamente el producto " + produDto.getName());
 
 		} catch (Exception error) {
-			redirectAttributes.addFlashAttribute("mensaje_error", "Hubo un error en la actualización");
+			redirectAttributes.addFlashAttribute("mensaje", "Hubo un error en la actualización");
 			logger.error(error.getMessage());
 		}
 
@@ -89,12 +97,12 @@ public class ProductController {
 
 	@GetMapping("/product/delete/{id}")
 	public String deleteProduct(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-		
+
 		try {
 			productService.deleteById(id);
-			redirectAttributes.addFlashAttribute("mensaje", "El producto #"+id+" se elimino correctamente");
-			logger.info("El producto #"+id+" se elimino correctamente");
-		}catch (Exception error) {
+			redirectAttributes.addFlashAttribute("mensaje", "El producto #" + id + " se elimino correctamente");
+			logger.info("El producto #" + id + " se elimino correctamente");
+		} catch (Exception error) {
 			redirectAttributes.addFlashAttribute("mensaje", "Hubo un error al eliminar el producto");
 			logger.error(error.getMessage());
 		}

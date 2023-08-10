@@ -65,4 +65,18 @@ public class ProductServiceImpl implements IProductService {
 		productRepository.deleteById(id);
 	}
 
+	@Override
+	public List<ProductDto> findByNameContainingIgnoreCase(String keyword) {
+		List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
+		List<ProductDto> listProductsDto = new ArrayList<>();
+		for (Product product : products) {
+			ProductDto dto = new ProductDto();
+			BeanUtils.copyProperties(product, dto);
+			listProductsDto.add(dto);
+		}
+		return listProductsDto;
+	}
+	
+	
+
 }
