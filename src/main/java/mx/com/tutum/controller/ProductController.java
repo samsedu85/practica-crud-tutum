@@ -72,7 +72,19 @@ public class ProductController {
 
 	@GetMapping("/product/{id}")
 	public String updateProduct(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-		return "product_update";
+
+		try {
+			ProductDto produDto = productService.findById(id);
+			model.addAttribute("producto", produDto);
+			model.addAttribute("titulo", "Editar producto #" + produDto.getIdProduct());
+			logger.info("Se actualizo correctamente el producto " + produDto.getName());
+
+		} catch (Exception error) {
+			redirectAttributes.addFlashAttribute("mensaje_error", "Hubo un error en la actualización");
+			logger.error(error.getMessage());
+		}
+
+		return "product_create";
 	}
 
 	@GetMapping("/product/delete/{id}")

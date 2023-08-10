@@ -40,8 +40,14 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ProductDto findById(Long id) {
-		return null;
+		ProductDto productDto = null;
+		if(productRepository.findById(id).isPresent()) {
+			productDto = new ProductDto();
+			BeanUtils.copyProperties(productRepository.findById(id).get(), productDto);
+		}
+		return productDto;
 	}
 
 	@Override
