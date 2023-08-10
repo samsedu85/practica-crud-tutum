@@ -3,6 +3,7 @@
  */
 package mx.com.tutum.models.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,12 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	public ProductDto save(ProductDto productDto, Integer update) {
-		return null;
+	@Transactional
+	public void save(ProductDto productDto) {
+		Product product = new Product();
+		BeanUtils.copyProperties(productDto, product);
+		product.setCreateAt(LocalDateTime.now());
+		productRepository.save(product);
 	}
 
 	@Override

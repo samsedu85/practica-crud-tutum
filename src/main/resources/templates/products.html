@@ -26,26 +26,28 @@
   </button>
 </div>
 
-<div th:if="${products.size() > 0}">
+<div th:if="${productos.size() > 0}">
   <table class="table table-hover table-responsive-xl">
     <thead class="thead-light">
       <tr>
         <th scope="col">Id</th>
         <th scope="col">Nombre</th>
         <th scope="col">Precio</th>
+        <th scope="col">Fecha/Hora alta</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr th:each="product : ${products}">
-        <th scope="row">[[${product.idProduct}]]</th>
-        <td>[[${product.name}]]</td>
-        <td>[[${product.price}]]</td>
+      <tr th:each="producto : ${productos}">
+        <th scope="row">[[${producto.idProduct}]]</th>
+        <td>[[${producto.name}]]</td>
+        <td>[[${producto.price}]]</td>
+        <td>[[${producto.createAt}]]</td>
         <td>
-          <a th:href="@{'/products/' + ${product.idProduct}}" title="Editar"
+          <a th:href="@{'/products/' + ${producto.idProduct}}" title="Editar"
             class="fa-regular fa-pen-to-square icon-dark"></a>
            
-          <a th:href="@{'/products/delete/' + ${product.idProduct}}" th:productName="${product.name}" id="btnDelete"
+          <a th:href="@{'/products/delete/' + ${producto.idProduct}}" th:productName="${producto.name}" id="btnDelete"
             title="Eliminar" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
         </td>
       </tr>

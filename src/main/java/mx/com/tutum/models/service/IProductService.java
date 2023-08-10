@@ -17,7 +17,7 @@ public interface IProductService {
 	
 	public ProductDto findById(Long id);
 	
-	public ProductDto save(ProductDto productDto, Integer update);
+	public void save(ProductDto productDto);
 	
 	public void deleteById(Long id);
 

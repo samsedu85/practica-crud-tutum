@@ -36,11 +36,12 @@ public class ProductController {
 		try {
 
 			List<ProductDto> listProducts = productService.findAll();
-			model.addAttribute("products", listProducts);
+			model.addAttribute("productos", listProducts);
 			logger.info("obteniendo lista de productos");
 
 		} catch (Exception error) {
 			model.addAttribute("mensaje_error", "Por el momento no es posible mostrar los productos");
+			logger.error(error.getMessage());
 		}
 
 		return "products";
@@ -48,11 +49,24 @@ public class ProductController {
 
 	@GetMapping("/product/create")
 	public String createProduct(Model model) {
+		ProductDto product = new ProductDto();
+		model.addAttribute("producto", product);
+		model.addAttribute("titulo", "Crear Producto");
 		return "product_create";
 	}
 
 	@PostMapping("/product/save")
 	public String saveProduct(ProductDto productDto, RedirectAttributes redirectAttributes) {
+
+		try {
+			productService.save(productDto);
+			redirectAttributes.addFlashAttribute("mensaje_error", "El producto se guardo correctamente");
+			logger.info("producto (" + productDto.getName() + ") se guardo correctamente");
+		} catch (Exception error) {
+			redirectAttributes.addFlashAttribute("mensaje_error", "Hubo un error al guardar el producto");
+			logger.error(error.getMessage());
+		}
+
 		return "redirect:/products";
 	}
 
