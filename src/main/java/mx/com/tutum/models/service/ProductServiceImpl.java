@@ -43,7 +43,7 @@ public class ProductServiceImpl implements IProductService {
 	@Transactional(readOnly = true)
 	public ProductDto findById(Long id) {
 		ProductDto productDto = null;
-		if(productRepository.findById(id).isPresent()) {
+		if (productRepository.findById(id).isPresent()) {
 			productDto = new ProductDto();
 			BeanUtils.copyProperties(productRepository.findById(id).get(), productDto);
 		}
@@ -60,8 +60,9 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
-
+		productRepository.deleteById(id);
 	}
 
 }

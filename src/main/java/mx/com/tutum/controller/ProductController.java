@@ -89,6 +89,15 @@ public class ProductController {
 
 	@GetMapping("/product/delete/{id}")
 	public String deleteProduct(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+		
+		try {
+			productService.deleteById(id);
+			redirectAttributes.addFlashAttribute("mensaje", "El producto #"+id+" se elimino correctamente");
+			logger.info("El producto #"+id+" se elimino correctamente");
+		}catch (Exception error) {
+			redirectAttributes.addFlashAttribute("mensaje", "Hubo un error al eliminar el producto");
+			logger.error(error.getMessage());
+		}
 		return "redirect:/products";
 	}
 

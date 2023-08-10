@@ -49,6 +49,14 @@
 		</form>
 	</div>
 
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#btnCancel").on("click", function () {
+				window.location = "[[@{/products}]]";
+			});
+		});
+	</script>
+
 	<div th:replace="fragments/footer :: footer"></div>
 </body>
 
