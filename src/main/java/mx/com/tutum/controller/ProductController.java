@@ -32,13 +32,30 @@ public class ProductController {
 	@Autowired
 	private IProductService productService;
 
+	@GetMapping("/")
+	public String get(Model model) {
+
+		List<ProductDto> listProducts = new ArrayList<>();
+
+		try {
+			listProducts = productService.findAll();
+			model.addAttribute("productos", listProducts);
+
+		} catch (Exception error) {
+			model.addAttribute("mensaje", "Por el momento no es posible mostrar los productos");
+			logger.error(error.getMessage());
+		}
+		logger.info("obteniendo lista de productos");
+		return "products";
+	}
+
 	@GetMapping("/products")
 	public String getProducts(Model model, @Param("keyword") String keyword) {
 
 		List<ProductDto> listProducts = new ArrayList<>();
 		try {
 
-			if(keyword == null) {
+			if (keyword == null) {
 				listProducts = productService.findAll();
 			} else {
 				productService.findByNameContainingIgnoreCase(keyword).forEach(listProducts::add);

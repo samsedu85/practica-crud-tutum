@@ -28,17 +28,15 @@
 
 	<div class="my-3">
 		<form th:action="@{/products}">
-			<div class="row d-flex">
-				<div class="col-md-4 mt-1">
+			<div class="d-flex p-2">
+				<div class="col-md-4 mt-2">
 					<div class="search">
-						<i class="fa fa-search"></i>
 						<input id="keyword" type="search" name="keyword" th:value="${keyword}" required
 							class="form-control" placeholder="Ingresa el nombre del producto a buscar">
-						<button type="submit" class="btn btn-secondary">Buscar</button>
+						<button type="submit" class="btn btn-primary">Buscar</button>
+						<button id="btnClear" class="btn btn-secondary">Limpiar</button>
+
 					</div>
-				</div>
-				<div class="col-md-2 mt-2">
-					<button id="btnClear" class="btn btn-info">Borrar</button>
 				</div>
 			</div>
 		</form>
